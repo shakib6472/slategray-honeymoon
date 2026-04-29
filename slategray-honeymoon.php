@@ -1,15 +1,21 @@
 <?php
-/**
- * Plugin Name: HoneyMoon By Shakib
- * Plugin URI:  https://www.facebook.com/proshanto.das.176081/
- * Description: Honeymoon couple registration, gift code system, dashboard & withdraw manager. Shortcodes: [honeymoon_login], [honeymoon_registration], [honeymooon_dashboard]
- * Version:     2.0.0
- * Author:      Kanai
- * Author URI:  https://www.facebook.com/proshanto.das.176081/
- * Text Domain: slategray-honeymoon
- * Requires at least: 5.8
- * Requires PHP: 7.4
- */
+
+/*
+ * Plugin Name:      HoneyMoon By Shakib
+* Plugin URI:        https://github.com/shakib6472/
+* Description:       Honeymoon couple registration, gift code system, dashboard & withdraw manager
+* Version:           1.0.0
+* Requires at least: 5.8
+* Requires PHP:      7.4
+* Author:            Shakib Shown
+* Author URI:        https://github.com/shakib6472/
+* License:           GPL v2 or later
+* License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+* Text Domain:       slategray-honeymoon
+* Domain Path:       /languages
+*/
+
+
 
 // Block direct access
 if ( ! defined( 'ABSPATH' ) ) {
