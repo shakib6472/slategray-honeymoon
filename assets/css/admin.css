@@ -1,0 +1,404 @@
+/* ============================================================
+   MI LUNA DE MIEL — Admin Stylesheet
+   Scoped to plugin admin pages only (hm- prefix throughout).
+   Complements WP admin UI without overriding global styles.
+============================================================ */
+
+
+/* ============================================================
+   1. DESIGN TOKENS  (admin palette)
+============================================================ */
+:root {
+    --hm-primary:       #98C7BC;
+    --hm-primary-dark:  #7BB3A6;
+    --hm-primary-light: #E8F4F1;
+    --hm-accent:        #F5A88A;
+    --hm-accent-dark:   #E89B7E;
+    --hm-danger:        #dc3545;
+    --hm-danger-light:  #fff5f5;
+    --hm-success-bg:    #f0fdf4;
+    --hm-success-text:  #166534;
+    --hm-success-border:#bbf7d0;
+    --hm-text:          #1d2327;
+    --hm-muted:         #646970;
+    --hm-border:        #dcdcde;
+    --hm-bg:            #f6f7f7;
+    --hm-card-bg:       #ffffff;
+    --hm-radius:        8px;
+    --hm-radius-sm:     5px;
+    --hm-shadow:        0 1px 4px rgba(0, 0, 0, 0.07);
+    --hm-font:          -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+
+/* ============================================================
+   2. PAGE WRAPPER
+============================================================ */
+.hm-wrap {
+    max-width: 1200px;
+    padding-bottom: 40px;
+}
+
+.hm-page-title {
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    color: var(--hm-text) !important;
+    margin-bottom: 16px !important;
+    border-left: 4px solid var(--hm-primary);
+    padding-left: 12px;
+}
+
+.hm-section-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--hm-text);
+    margin: 24px 0 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--hm-border);
+}
+
+
+/* ============================================================
+   3. SEARCH FORM
+============================================================ */
+.hm-search-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.hm-search {
+    padding: 7px 12px;
+    border: 1px solid var(--hm-border);
+    border-radius: var(--hm-radius-sm);
+    font-size: 13px;
+    width: 280px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.hm-search:focus { border-color: var(--hm-primary); }
+
+
+/* ============================================================
+   4. CARD WRAPPER
+============================================================ */
+.hm-card {
+    background: var(--hm-card-bg);
+    border: 1px solid var(--hm-border);
+    border-radius: var(--hm-radius);
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: var(--hm-shadow);
+}
+
+
+/* ============================================================
+   5. TABLES
+============================================================ */
+.hm-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 13px;
+    border: none !important;
+}
+
+.hm-table thead th {
+    background: #f8f9fa !important;
+    color: var(--hm-muted) !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    padding: 11px 16px !important;
+    border-bottom: 1px solid var(--hm-border) !important;
+    white-space: nowrap;
+}
+
+.hm-table tbody td {
+    padding: 12px 16px !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    vertical-align: middle !important;
+    color: var(--hm-text);
+    font-size: 13px;
+}
+
+.hm-table tbody tr:last-child td { border-bottom: none !important; }
+
+.hm-table tbody tr:hover { background: #fafcfc !important; }
+
+/* Empty state row */
+.hm-empty {
+    text-align: center !important;
+    padding: 40px !important;
+    color: var(--hm-muted) !important;
+    font-style: italic;
+}
+
+
+/* ============================================================
+   6. CODE CHIP
+============================================================ */
+.hm-code {
+    display: inline-block;
+    font-family: "SFMono-Regular", Consolas, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--hm-primary-dark);
+    background: var(--hm-primary-light);
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(152, 199, 188, 0.35);
+}
+
+
+/* ============================================================
+   7. STATUS BADGES
+============================================================ */
+.hm-badge {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-transform: capitalize;
+}
+
+.status-completed,
+.hm-badge.status-completed  { background: #dcfce7; color: #166534; }
+
+.status-processing,
+.hm-badge.status-processing { background: #dbeafe; color: #1e40af; }
+
+.status-pending,
+.hm-badge.status-pending    { background: #fef9c3; color: #854d0e; }
+
+.status-cancelled,
+.hm-badge.status-cancelled  { background: #fee2e2; color: #991b1b; }
+
+.status-on-hold,
+.hm-badge.status-on-hold    { background: #f3e8ff; color: #6b21a8; }
+
+/* Withdraw status badges */
+.hm-badge.pending  { background: #fef9c3; color: #854d0e; }
+.hm-badge.approved { background: #dcfce7; color: #166534; }
+.hm-badge.rejected { background: #fee2e2; color: #991b1b; }
+
+
+/* ============================================================
+   8. DETAIL GRID  (user detail page)
+============================================================ */
+.hm-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0;
+}
+
+.hm-detail-grid > div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px 20px;
+    border-right: 1px solid var(--hm-border);
+    border-bottom: 1px solid var(--hm-border);
+}
+
+.hm-detail-grid > div:last-child { border-right: none; }
+
+.hm-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--hm-muted);
+}
+
+.hm-detail-grid > div strong,
+.hm-detail-grid > div .hm-stat-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--hm-text);
+    word-break: break-all;
+}
+
+
+/* ============================================================
+   9. TABS  (withdraw page status filter)
+============================================================ */
+.hm-tabs {
+    display: flex;
+    list-style: none;
+    margin: 0 0 16px !important;
+    padding: 0 !important;
+    gap: 2px;
+    border-bottom: 2px solid var(--hm-border);
+}
+
+.hm-tabs li a {
+    display: block;
+    padding: 9px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--hm-muted);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: color 0.18s, border-color 0.18s;
+}
+
+.hm-tabs li a:hover { color: var(--hm-primary-dark); }
+
+.hm-tabs li.active a {
+    color: var(--hm-primary-dark);
+    border-bottom-color: var(--hm-primary);
+    font-weight: 700;
+}
+
+
+/* ============================================================
+   10. ACTION BUTTONS
+============================================================ */
+.hm-btn-danger {
+    color: var(--hm-danger) !important;
+    border-color: var(--hm-danger) !important;
+}
+
+.hm-btn-danger:hover {
+    background: var(--hm-danger) !important;
+    color: #fff !important;
+}
+
+/* Spacing between multiple row action buttons */
+.hm-table td .button { margin-right: 4px; }
+.hm-table td .button:last-child { margin-right: 0; }
+
+
+/* ============================================================
+   11. BACK BUTTON
+============================================================ */
+.hm-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    margin-bottom: 16px;
+    background: var(--hm-card-bg);
+    border: 1px solid var(--hm-border);
+    border-radius: var(--hm-radius-sm);
+    color: var(--hm-muted) !important;
+    font-size: 13px;
+    text-decoration: none !important;
+    transition: background 0.18s, color 0.18s, border-color 0.18s;
+    box-shadow: var(--hm-shadow);
+}
+
+.hm-back-btn:hover {
+    background: var(--hm-primary-light);
+    border-color: var(--hm-primary);
+    color: var(--hm-primary-dark) !important;
+}
+
+
+/* ============================================================
+   12. MENU ICON  (heart icon tint in WP admin menu)
+============================================================ */
+#adminmenu .toplevel_page_hm-users .wp-menu-image::before {
+    color: var(--hm-primary) !important;
+}
+
+#adminmenu .toplevel_page_hm-users.current .wp-menu-image::before,
+#adminmenu .toplevel_page_hm-users:hover .wp-menu-image::before {
+    color: #fff !important;
+}
+
+
+/* ============================================================
+   13. WP ADMIN OVERRIDES  (scoped, non-destructive)
+============================================================ */
+
+/* Remove default WP table outer border inside our card */
+.hm-card .widefat {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Prevent WP column header from adding its own background */
+.hm-card .widefat thead th {
+    background: #f8f9fa !important;
+}
+
+/* Fix WP button group spacing in table rows */
+.hm-table .button-small {
+    height: auto;
+    line-height: 1.6;
+    padding: 4px 10px;
+    font-size: 12px;
+}
+
+/* Pagination alignment */
+.tablenav {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 12px;
+}
+
+.tablenav-pages .page-numbers {
+    padding: 5px 10px;
+    border: 1px solid var(--hm-border);
+    border-radius: var(--hm-radius-sm);
+    font-size: 13px;
+    color: var(--hm-muted);
+    text-decoration: none;
+    margin: 0 2px;
+}
+
+.tablenav-pages .page-numbers.current {
+    background: var(--hm-primary);
+    border-color: var(--hm-primary);
+    color: #fff;
+}
+
+.tablenav-pages .page-numbers:hover:not(.current) {
+    border-color: var(--hm-primary);
+    color: var(--hm-primary-dark);
+}
+
+
+/* ============================================================
+   14. RESPONSIVE  (admin is rarely mobile but just in case)
+============================================================ */
+@media (max-width: 782px) {
+
+    .hm-detail-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .hm-detail-grid > div:nth-child(2) { border-right: none; }
+
+    .hm-search { width: 100%; }
+
+    .hm-search-form { flex-direction: column; align-items: flex-start; }
+
+    .hm-tabs { overflow-x: auto; }
+
+    .hm-table thead { display: none; }
+
+    .hm-table tbody td {
+        display: block;
+        padding: 8px 14px !important;
+        border-bottom: none !important;
+    }
+
+    .hm-table tbody tr {
+        display: block;
+        border: 1px solid var(--hm-border);
+        border-radius: var(--hm-radius-sm);
+        margin-bottom: 10px;
+        overflow: hidden;
+    }
+}

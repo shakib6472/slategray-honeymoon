@@ -1,98 +1,215 @@
 <?php
+/**
+ * Registration form template - rendered by [honeymoon_registration] shortcode.
+ * If the user is already logged in, shows a friendly card with a
+ * button to the dashboard instead of the form.
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
-    exit; 
+    exit;
 }
 ?>
-<div id="serverAlert">
-    <div class="notice">
-          <span class="icon">ℹ️</span>
-          <p class="message">Por favor completa todos los campos</p>
-    </div>
-    
+
+<!-- Toast / server alert (shared component) -->
+<div id="hm-server-alert" class="hm-alert">
+    <span class="hm-alert-icon">ℹ️</span>
+    <p class="hm-alert-message">Por favor completa todos los campos.</p>
 </div>
 
- <div class="loader-overlay">
-    <div class="loader"></div> 
- </div>
- 
-
-  <?php
-      if ( is_user_logged_in() ) {
-          ?>
-          <div class="hm-login-box">
-              <p>Ya has iniciado sesión. Ir al panel.</p>
-
-              <a href="<?php echo site_url('/dashboard');?>" class="dashboard-btn">
-                  Ir al panel
-              </a>
-          </div>
-          <?php
-          return; // 🔥 important (form stop)
-      }
- ?>
-
-<!-- Registration Success POPUP -->
- 
-<div id="successOverlay">
-
-  <div class="success-box">
-
-    <h2>Registro exitoso</h2>
-
-    <p>Tu código de luna de miel:</p>
-
-    <div class="code-box">
-      <input type="text" id="userCode" readonly>
-      <button id="copyCode">📋</button>
-    </div>
-
-    <a href="<?php echo site_url('/dashboard');?>" id="goDashboard" class="dashboard-btn">
-      Ir al panel
-    </a>
-
-  </div>
-
+<!-- Loader overlay -->
+<div class="hm-loader-overlay">
+    <div class="hm-loader"></div>
 </div>
 
-<form id="honey-registrationForm">
 
-  <!-- Husband -->
-  <label>Nombre del esposo</label>
-  <input type="text" name="husband_first_name" placeholder="Nombre del esposo" required>
+<?php if ( is_user_logged_in() ) :
+    $current = wp_get_current_user();
+    $couple  = hm_get_couple_name( $current->ID );
+?>
 
-  <label>Apellido del esposo</label>
-  <input type="text" name="husband_last_name" placeholder="Apellido del esposo" required>
+    <!-- Already logged in state -->
+    <div class="hm-auth-card hm-logged-card">
 
-  <!-- Wife -->
-  <label>Nombre de la esposa</label>
-  <input type="text" name="wife_first_name" placeholder="Nombre de la esposa" required>
-
-  <label>Apellido de la esposa</label>
-  <input type="text" name="wife_last_name" placeholder="Apellido de la esposa" required>
-
-  <!-- Email -->
-  <label>Dirección de correo electrónico</label>
-  <input type="email" name="email" placeholder="Dirección de correo electrónico" required>
-
-  <!-- Password -->
-  <div class="password-group">
-
-        <label>Contraseña</label>
-        <div class="password-wrapper">
-            <input type="password" id="password" name="password" placeholder="Contraseña">
-            <span class="toggle-pass">👁️</span>
+        <div class="hm-auth-header">
+            <div class="hm-auth-badge">💝</div>
+            <h2>¡Hola, <?php echo esc_html( $couple ?: $current->display_name ); ?>!</h2>
+            <p class="hm-auth-sub">Ya tienes una cuenta activa. No necesitas registrarte de nuevo.</p>
         </div>
 
-        <label>Confirmar Contraseña</label>
-        <div class="password-wrapper">
-            <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmar Contraseña">
+        <a href="<?php echo esc_url( site_url( '/dashboard' ) ); ?>" class="hm-btn hm-btn-primary">
+            Ir al panel
+        </a>
+
+        <a href="<?php echo esc_url( wp_logout_url( home_url() ) ); ?>" class="hm-btn hm-btn-ghost">
+            Cerrar sesión
+        </a>
+
+    </div>
+
+<?php else : ?>
+
+    <!-- Success popup overlay (shown after successful registration) -->
+    <div id="hm-success-overlay">
+
+        <div class="hm-success-box">
+
+            <div class="hm-success-icon">✨</div>
+
+            <h2>¡Registro exitoso!</h2>
+            <p class="hm-success-sub">Este es tu código único de luna de miel:</p>
+
+            <div class="hm-code-box">
+                <input type="text" id="hm-user-code" readonly>
+                <button type="button" id="hm-copy-code" title="Copiar código">📋</button>
+            </div>
+
+            <p class="hm-success-tip">
+                Comparte este código con tus invitados para que puedan regalarte.
+            </p>
+
+            <a href="<?php echo esc_url( site_url( '/dashboard' ) ); ?>" class="hm-btn hm-btn-primary">
+                Ir al panel
+            </a>
+
         </div>
 
-        <small id="passError"></small>
+    </div>
 
-  </div>
+    <!-- Registration form -->
+    <div class="hm-auth-card hm-auth-card-wide">
 
-  <button type="submit" >Registrar</button>
+        <div class="hm-auth-header">
+            <div class="hm-auth-badge">💍</div>
+            <h2>Registra tu pareja</h2>
+            <p class="hm-auth-sub">Crea tu cuenta y obtén tu código único de regalo</p>
+        </div>
 
-</form>
+        <form id="hm-registration-form" class="hm-form" novalidate>
+
+            <!-- Husband section -->
+            <div class="hm-form-section">
+                <h3 class="hm-section-label">Datos del esposo</h3>
+
+                <div class="hm-grid-2">
+                    <div class="hm-field">
+                        <label for="hm-husband-first">Nombre</label>
+                        <input
+                            type="text"
+                            id="hm-husband-first"
+                            name="husband_first_name"
+                            placeholder="Nombre del esposo"
+                            autocomplete="given-name"
+                            required
+                        >
+                    </div>
+
+                    <div class="hm-field">
+                        <label for="hm-husband-last">Apellido</label>
+                        <input
+                            type="text"
+                            id="hm-husband-last"
+                            name="husband_last_name"
+                            placeholder="Apellido del esposo"
+                            autocomplete="family-name"
+                            required
+                        >
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wife section -->
+            <div class="hm-form-section">
+                <h3 class="hm-section-label">Datos de la esposa</h3>
+
+                <div class="hm-grid-2">
+                    <div class="hm-field">
+                        <label for="hm-wife-first">Nombre</label>
+                        <input
+                            type="text"
+                            id="hm-wife-first"
+                            name="wife_first_name"
+                            placeholder="Nombre de la esposa"
+                            autocomplete="given-name"
+                            required
+                        >
+                    </div>
+
+                    <div class="hm-field">
+                        <label for="hm-wife-last">Apellido</label>
+                        <input
+                            type="text"
+                            id="hm-wife-last"
+                            name="wife_last_name"
+                            placeholder="Apellido de la esposa"
+                            autocomplete="family-name"
+                            required
+                        >
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account section -->
+            <div class="hm-form-section">
+                <h3 class="hm-section-label">Datos de acceso</h3>
+
+                <div class="hm-field">
+                    <label for="hm-email">Correo electrónico</label>
+                    <input
+                        type="email"
+                        id="hm-email"
+                        name="email"
+                        placeholder="tu@correo.com"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+                <div class="hm-grid-2">
+                    <div class="hm-field">
+                        <label for="hm-password">Contraseña</label>
+                        <div class="hm-password-wrapper">
+                            <input
+                                type="password"
+                                id="hm-password"
+                                name="password"
+                                placeholder="Mínimo 6 caracteres"
+                                autocomplete="new-password"
+                                required
+                            >
+                            <span class="hm-toggle-pass" data-target="hm-password">👁</span>
+                        </div>
+                    </div>
+
+                    <div class="hm-field">
+                        <label for="hm-confirm-password">Confirmar contraseña</label>
+                        <div class="hm-password-wrapper">
+                            <input
+                                type="password"
+                                id="hm-confirm-password"
+                                name="confirm_password"
+                                placeholder="Repite la contraseña"
+                                autocomplete="new-password"
+                                required
+                            >
+                            <span class="hm-toggle-pass" data-target="hm-confirm-password">👁</span>
+                        </div>
+                    </div>
+                </div>
+
+                <small id="hm-pass-error" class="hm-field-hint"></small>
+            </div>
+
+            <button type="submit" class="hm-btn hm-btn-primary hm-btn-block">
+                Crear mi cuenta
+            </button>
+
+            <p class="hm-auth-footer">
+                ¿Ya tienes cuenta?
+                <a href="<?php echo esc_url( site_url( '/iniciar-sesion' ) ); ?>">Inicia sesión</a>
+            </p>
+
+        </form>
+
+    </div>
+
+<?php endif; ?>

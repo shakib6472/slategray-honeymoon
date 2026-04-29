@@ -1,0 +1,1006 @@
+/* ============================================================
+   MI LUNA DE MIEL — Frontend Stylesheet
+   Brand: Mint Teal + Coral | Font: Google Sans
+   Covers: Login · Registration · Dashboard
+============================================================ */
+
+
+/* ============================================================
+   1. DESIGN TOKENS
+============================================================ */
+:root {
+    --hm-primary:        #98C7BC;
+    --hm-primary-dark:   #7BB3A6;
+    --hm-primary-light:  #E8F4F1;
+    --hm-accent:         #F5A88A;
+    --hm-accent-dark:    #E89B7E;
+    --hm-accent-light:   #FDE8DF;
+    --hm-cream:          #FBEFE2;
+    --hm-bg:             #F7F9FB;
+    --hm-card:           #FFFFFF;
+    --hm-text:           #2C2C2C;
+    --hm-muted:          #888888;
+    --hm-border:         #E8E8E8;
+    --hm-success:        #4CAF88;
+    --hm-error:          #E05252;
+
+    --hm-radius:         12px;
+    --hm-radius-sm:      8px;
+    --hm-radius-xs:      6px;
+    --hm-shadow:         0 4px 20px rgba(0, 0, 0, 0.06);
+    --hm-shadow-md:      0 8px 30px rgba(0, 0, 0, 0.10);
+
+    --hm-font:           "Google Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --hm-font-script:    "Dancing Script", cursive;
+
+    --hm-sidebar-width:  240px;
+    --hm-transition:     0.22s ease;
+}
+
+
+/* ============================================================
+   2. BASE RESET (scoped to plugin wrappers)
+============================================================ */
+.hm-auth-card *,
+.hm-dashboard * {
+    box-sizing: border-box;
+}
+
+.hm-auth-card,
+.hm-dashboard {
+    font-family: var(--hm-font);
+    color: var(--hm-text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+
+/* ============================================================
+   3. SHARED COMPONENTS
+============================================================ */
+
+/* --- Toast alert --- */
+#hm-server-alert {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    border-radius: var(--hm-radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    width: 320px;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 99999;
+    box-shadow: var(--hm-shadow-md);
+    animation: hm-slide-up 0.3s ease;
+}
+
+#hm-server-alert.hm-alert-show  { display: flex; }
+#hm-server-alert.hm-alert-error { background: #fff1f0; color: var(--hm-error); border: 1px solid #fca5a5; }
+#hm-server-alert.hm-alert-ok    { background: #f0fdf4; color: var(--hm-success); border: 1px solid #86efac; }
+
+.hm-alert-icon  { font-size: 18px; flex-shrink: 0; }
+.hm-alert-message { margin: 0; }
+
+@keyframes hm-slide-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Loader overlay --- */
+.hm-loader-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 99998;
+}
+
+.hm-loader-overlay.hm-loading { display: flex; }
+
+.hm-loader {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background:
+        radial-gradient(farthest-side, var(--hm-accent) 94%, transparent) top/8px 8px no-repeat,
+        conic-gradient(transparent 30%, var(--hm-accent));
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 8px), #000 0);
+    animation: hm-spin 0.9s infinite linear;
+}
+
+@keyframes hm-spin { to { transform: rotate(1turn); } }
+
+/* --- Notice banner (inside content) --- */
+.hm-notice {
+    padding: 12px 16px;
+    border-radius: var(--hm-radius-sm);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.hm-notice-success {
+    background: #f0fdf4;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.hm-notice-error {
+    background: #fff1f0;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+
+/* ============================================================
+   4. BUTTONS
+============================================================ */
+.hm-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: var(--hm-radius-sm);
+    font-family: var(--hm-font);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    text-decoration: none !important;
+    transition: background var(--hm-transition), transform var(--hm-transition), box-shadow var(--hm-transition);
+    white-space: nowrap;
+}
+
+.hm-btn:focus-visible {
+    outline: 3px solid var(--hm-primary);
+    outline-offset: 2px;
+}
+
+/* Primary — mint teal */
+.hm-btn-primary {
+    background: var(--hm-primary);
+    color: #fff !important;
+}
+
+.hm-btn-primary:hover {
+    background: var(--hm-primary-dark);
+    box-shadow: 0 4px 12px rgba(152, 199, 188, 0.45);
+    transform: translateY(-1px);
+}
+
+/* Accent — coral */
+.hm-btn-accent {
+    background: var(--hm-accent);
+    color: #fff !important;
+}
+
+.hm-btn-accent:hover {
+    background: var(--hm-accent-dark);
+    box-shadow: 0 4px 12px rgba(245, 168, 138, 0.45);
+    transform: translateY(-1px);
+}
+
+/* Ghost — outlined */
+.hm-btn-ghost {
+    background: transparent;
+    color: var(--hm-muted) !important;
+    border: 1.5px solid var(--hm-border);
+}
+
+.hm-btn-ghost:hover {
+    background: var(--hm-bg);
+    color: var(--hm-text) !important;
+    border-color: var(--hm-primary);
+}
+
+/* Full-width block button */
+.hm-btn-block { width: 100%; }
+
+/* Disabled state */
+.hm-btn:disabled,
+.hm-btn[disabled] {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+
+/* ============================================================
+   5. FORM ELEMENTS
+============================================================ */
+.hm-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.hm-form-section {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--hm-border);
+    margin-bottom: 4px;
+}
+
+.hm-form-section:last-of-type { border-bottom: none; }
+
+.hm-section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--hm-primary-dark);
+    margin: 0 0 14px;
+}
+
+.hm-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.hm-field:last-child { margin-bottom: 0; }
+
+.hm-field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--hm-text);
+}
+
+.hm-field input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--hm-border);
+    border-radius: var(--hm-radius-sm);
+    font-family: var(--hm-font);
+    font-size: 14px;
+    color: var(--hm-text);
+    background: #fff;
+    transition: border-color var(--hm-transition), box-shadow var(--hm-transition);
+    outline: none;
+}
+
+.hm-field input:focus {
+    border-color: var(--hm-primary);
+    box-shadow: 0 0 0 3px rgba(152, 199, 188, 0.2);
+}
+
+.hm-field input::placeholder { color: #bbb; }
+
+.hm-field-hint {
+    font-size: 12px;
+    color: var(--hm-error);
+    margin-top: 4px;
+    display: block;
+    min-height: 16px;
+}
+
+/* 2-column grid for name fields */
+.hm-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+/* Row: checkbox + forgot link side by side */
+.hm-field-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Checkbox */
+.hm-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    color: var(--hm-text);
+    cursor: pointer;
+    user-select: none;
+}
+
+.hm-checkbox input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--hm-primary);
+    cursor: pointer;
+}
+
+/* Forgot password link */
+.hm-forgot-link {
+    font-size: 13px;
+    color: var(--hm-primary-dark);
+    text-decoration: none;
+}
+
+.hm-forgot-link:hover { text-decoration: underline; }
+
+/* Password wrapper */
+.hm-password-wrapper {
+    position: relative;
+}
+
+.hm-password-wrapper input { padding-right: 42px; }
+
+.hm-toggle-pass {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 17px;
+    line-height: 1;
+    opacity: 0.5;
+    transition: opacity var(--hm-transition);
+    user-select: none;
+}
+
+.hm-toggle-pass:hover { opacity: 1; }
+
+
+/* ============================================================
+   6. AUTH CARD  (login + registration outer wrapper)
+============================================================ */
+.hm-auth-card {
+    max-width: 480px;
+    margin: 50px auto;
+    background: var(--hm-card);
+    border-radius: var(--hm-radius);
+    box-shadow: var(--hm-shadow-md);
+    padding: 36px 32px;
+    position: relative;
+}
+
+/* Wider card for registration (has 2-col grids) */
+.hm-auth-card-wide {
+    max-width: 680px;
+}
+
+/* Header section: badge + heading + sub */
+.hm-auth-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.hm-auth-badge {
+    font-size: 36px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.hm-auth-header h2 {
+    font-family: var(--hm-font);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--hm-text);
+    margin: 0 0 6px;
+}
+
+.hm-auth-sub {
+    font-size: 14px;
+    color: var(--hm-muted);
+    margin: 0;
+}
+
+/* Footer link row */
+.hm-auth-footer {
+    text-align: center;
+    font-size: 13px;
+    color: var(--hm-muted);
+    margin: 18px 0 0;
+}
+
+.hm-auth-footer a {
+    color: var(--hm-primary-dark);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.hm-auth-footer a:hover { text-decoration: underline; }
+
+/* Logged-in card (already authenticated state) */
+.hm-logged-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+}
+
+.hm-logged-card .hm-btn { width: 100%; }
+
+
+/* ============================================================
+   7. SUCCESS OVERLAY  (after registration)
+============================================================ */
+#hm-success-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 99997;
+}
+
+#hm-success-overlay.hm-visible { display: flex; }
+
+.hm-success-box {
+    background: var(--hm-card);
+    border-radius: var(--hm-radius);
+    padding: 40px 32px;
+    text-align: center;
+    width: 100%;
+    max-width: 440px;
+    margin: 20px;
+    box-shadow: var(--hm-shadow-md);
+    animation: hm-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes hm-pop {
+    from { transform: scale(0.85); opacity: 0; }
+    to   { transform: scale(1);    opacity: 1; }
+}
+
+.hm-success-icon { font-size: 44px; margin-bottom: 12px; }
+
+.hm-success-box h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--hm-text);
+    margin: 0 0 6px;
+}
+
+.hm-success-sub {
+    font-size: 14px;
+    color: var(--hm-muted);
+    margin: 0 0 20px;
+}
+
+.hm-code-box {
+    display: flex;
+    align-items: stretch;
+    border: 1.5px solid var(--hm-border);
+    border-radius: var(--hm-radius-sm);
+    overflow: hidden;
+    margin-bottom: 14px;
+}
+
+.hm-code-box input {
+    flex: 1;
+    padding: 11px 14px;
+    border: none;
+    font-family: monospace;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-align: center;
+    color: var(--hm-primary-dark);
+    background: var(--hm-primary-light);
+    outline: none;
+}
+
+.hm-code-box button {
+    padding: 0 16px;
+    background: var(--hm-primary);
+    color: #fff;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background var(--hm-transition);
+}
+
+.hm-code-box button:hover { background: var(--hm-primary-dark); }
+
+.hm-success-tip {
+    font-size: 13px;
+    color: var(--hm-muted);
+    margin: 0 0 22px;
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   8. DASHBOARD LAYOUT
+============================================================ */
+.hm-dashboard {
+    display: flex;
+    min-height: 100vh;
+    background: var(--hm-bg);
+}
+
+
+/* ---- Sidebar ---- */
+.hm-sidebar {
+    width: var(--hm-sidebar-width);
+    background: var(--hm-primary);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.hm-sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 24px 20px;
+    font-family: var(--hm-font-script);
+    font-size: 18px;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.hm-sidebar-logo { font-size: 22px; }
+
+/* Nav */
+.hm-sidebar-nav {
+    list-style: none;
+    margin: 16px 0 0;
+    padding: 0 12px;
+    flex: 1;
+}
+
+.hm-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 14px;
+    border-radius: var(--hm-radius-sm);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+    transition: background var(--hm-transition), color var(--hm-transition);
+    margin-bottom: 4px;
+    position: relative;
+}
+
+.hm-nav-item:hover,
+.hm-nav-item.active {
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+}
+
+.hm-nav-item .dashicons {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+/* Gift count badge in nav */
+.hm-nav-badge {
+    margin-left: auto;
+    background: var(--hm-accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+    line-height: 1.4;
+}
+
+/* Sidebar footer (logout) */
+.hm-sidebar-footer {
+    padding: 16px 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.hm-logout-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: var(--hm-radius-sm);
+    color: rgba(255, 255, 255, 0.75) !important;
+    text-decoration: none !important;
+    font-size: 14px;
+    transition: background var(--hm-transition), color var(--hm-transition);
+}
+
+.hm-logout-link:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff !important;
+}
+
+
+/* ---- Main content area ---- */
+.hm-dashboard-content {
+    flex: 1;
+    padding: 32px;
+    overflow-x: hidden;
+    max-width: 960px;
+}
+
+/* Content header (title + sub) */
+.hm-content-header { margin-bottom: 24px; }
+
+.hm-page-heading {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--hm-text);
+    margin: 0 0 4px;
+}
+
+.hm-page-sub {
+    font-size: 14px;
+    color: var(--hm-muted);
+    margin: 0;
+}
+
+/* Tab visibility */
+.hm-tab { display: none; }
+.hm-tab.active { display: block; }
+
+
+/* ============================================================
+   9. STAT CARDS
+============================================================ */
+.hm-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.hm-stat-card {
+    background: var(--hm-card);
+    border-radius: var(--hm-radius);
+    padding: 22px 20px;
+    box-shadow: var(--hm-shadow);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border: 1px solid var(--hm-border);
+    transition: box-shadow var(--hm-transition), transform var(--hm-transition);
+}
+
+.hm-stat-card:hover {
+    box-shadow: var(--hm-shadow-md);
+    transform: translateY(-2px);
+}
+
+.hm-stat-icon { font-size: 28px; flex-shrink: 0; }
+
+.hm-stat-body {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.hm-stat-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--hm-muted);
+}
+
+.hm-stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--hm-text);
+    line-height: 1.2;
+}
+
+/* Code card: inline code + copy button */
+.hm-inline-code {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.hm-code-display {
+    font-family: monospace;
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: var(--hm-primary-dark);
+}
+
+.hm-copy-btn {
+    background: var(--hm-primary-light);
+    border: 1px solid var(--hm-primary);
+    border-radius: var(--hm-radius-xs);
+    padding: 4px 8px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background var(--hm-transition);
+}
+
+.hm-copy-btn:hover { background: var(--hm-primary); }
+
+
+/* ============================================================
+   10. WITHDRAW CARD
+============================================================ */
+.hm-withdraw-card {
+    background: var(--hm-card);
+    border-radius: var(--hm-radius);
+    padding: 22px 24px;
+    box-shadow: var(--hm-shadow);
+    border: 1px solid var(--hm-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.hm-withdraw-info h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--hm-text);
+    margin: 0 0 4px;
+}
+
+.hm-withdraw-info p {
+    font-size: 13px;
+    color: var(--hm-muted);
+    margin: 0;
+}
+
+/* Withdraw button states */
+.hm-btn-withdraw {
+    padding: 11px 22px;
+    font-size: 14px;
+    border-radius: var(--hm-radius-sm);
+    background: var(--hm-accent);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background var(--hm-transition);
+    white-space: nowrap;
+}
+
+.hm-btn-withdraw:hover:not(:disabled) { background: var(--hm-accent-dark); }
+
+.hm-btn-withdraw.pending  { background: #f59e0b; }
+.hm-btn-withdraw.approved { background: var(--hm-success); }
+.hm-btn-withdraw.rejected { background: #e5e7eb; color: var(--hm-muted); }
+
+
+/* ============================================================
+   11. GIFT LIST
+============================================================ */
+.hm-gift-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.hm-gift-item {
+    background: var(--hm-card);
+    border-radius: var(--hm-radius);
+    padding: 14px 18px;
+    box-shadow: var(--hm-shadow);
+    border: 1px solid var(--hm-border);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: box-shadow var(--hm-transition);
+}
+
+.hm-gift-item:hover { box-shadow: var(--hm-shadow-md); }
+
+.hm-gift-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid var(--hm-primary-light);
+}
+
+.hm-gift-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.hm-gift-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--hm-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hm-gift-product {
+    font-size: 13px;
+    color: var(--hm-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hm-gift-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+.hm-gift-price {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--hm-accent-dark);
+}
+
+.hm-gift-date {
+    font-size: 12px;
+    color: var(--hm-muted);
+}
+
+/* Empty state */
+.hm-empty-state {
+    text-align: center;
+    padding: 52px 20px;
+    background: var(--hm-card);
+    border-radius: var(--hm-radius);
+    border: 1.5px dashed var(--hm-border);
+}
+
+.hm-empty-icon { font-size: 40px; margin-bottom: 12px; }
+
+.hm-empty-state p {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--hm-text);
+    margin: 0 0 6px;
+}
+
+.hm-empty-state small {
+    font-size: 13px;
+    color: var(--hm-muted);
+}
+
+
+/* ============================================================
+   12. PROFILE CARD
+============================================================ */
+.hm-profile-card {
+    background: var(--hm-card);
+    border-radius: var(--hm-radius);
+    padding: 28px;
+    box-shadow: var(--hm-shadow);
+    border: 1px solid var(--hm-border);
+    max-width: 640px;
+}
+
+
+/* ============================================================
+   13. INLINE CODE (generic — used in success popup + dashboard)
+============================================================ */
+.hm-code {
+    font-family: monospace;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--hm-primary-dark);
+    background: var(--hm-primary-light);
+    padding: 3px 8px;
+    border-radius: 4px;
+}
+
+
+/* ============================================================
+   14. RESPONSIVE — Tablet  ≤ 1024px
+============================================================ */
+@media (max-width: 1024px) {
+    .hm-stats-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .hm-dashboard-content { padding: 24px; }
+}
+
+
+/* ============================================================
+   15. RESPONSIVE — Mobile  ≤ 768px
+============================================================ */
+@media (max-width: 768px) {
+
+    /* Sidebar becomes top horizontal bar */
+    .hm-dashboard { flex-direction: column; }
+
+    .hm-sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 10px 12px;
+        gap: 8px;
+    }
+
+    .hm-sidebar-brand {
+        padding: 0;
+        border: none;
+        font-size: 15px;
+        flex: 1;
+    }
+
+    .hm-sidebar-nav {
+        display: flex;
+        flex-direction: row;
+        gap: 4px;
+        margin: 0;
+        padding: 0;
+        overflow-x: auto;
+        flex: none;
+    }
+
+    .hm-nav-item { white-space: nowrap; font-size: 13px; padding: 8px 12px; }
+
+    .hm-sidebar-footer {
+        padding: 0;
+        border: none;
+    }
+
+    .hm-logout-link { padding: 8px 12px; font-size: 13px; }
+
+    /* Content */
+    .hm-dashboard-content { padding: 16px; }
+
+    /* Stats stack */
+    .hm-stats-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    /* Withdraw card stack */
+    .hm-withdraw-card { flex-direction: column; align-items: flex-start; }
+    .hm-btn-withdraw { width: 100%; justify-content: center; }
+
+    /* Auth card */
+    .hm-auth-card {
+        margin: 20px 16px;
+        padding: 24px 20px;
+    }
+}
+
+
+/* ============================================================
+   16. RESPONSIVE — Small Mobile  ≤ 480px
+============================================================ */
+@media (max-width: 480px) {
+
+    .hm-grid-2 { grid-template-columns: 1fr; }
+
+    .hm-gift-item {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .hm-gift-meta {
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .hm-success-box { padding: 28px 20px; }
+
+    #hm-server-alert {
+        width: calc(100vw - 30px);
+        right: 15px;
+        bottom: 15px;
+    }
+}
